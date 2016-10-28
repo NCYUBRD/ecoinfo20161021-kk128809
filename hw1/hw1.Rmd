@@ -1,0 +1,27 @@
+---
+title: "hw1"
+output: html_document
+---
+
+#作業
+
+##載入資料
+
+###設定檔案位置
+```{r}
+setwd('c:\\Users/U250/Desktop/生態資訊/ch_2.1/data/raw/')
+```
+
+###載入所有資料
+```{r}
+library(data.table)
+#載入所有檔案
+#pattern = 'auto'  設定載入檔案名稱中有auto的檔案
+files <- list.files('.' , pattern = 'auto')
+
+cwd <- file()
+
+cwd[[1]] <- files[1]
+
+for( i=1:)
+list()
