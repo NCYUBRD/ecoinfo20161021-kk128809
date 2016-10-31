@@ -1,82 +1,261 @@
-#ä½œæ¥­
+#§@·~
 
-##è¼‰å…¥è³‡æ–™
+­pºâ´ú¯¸ C0M530 (¾Ä°_´ò¯¸) ±q2006¨ì2015¦~¦~ªº
+  ¨C¤é¥­§¡®ğ·Å¡B
+  ¨C¤é³Ì§C·Åªº¥­§¡¡B
+  ¨C¤é³Ì°ª·Åªº¥­§¡¡B
+  ¨C¤ë¥­§¡®ğ·Å¡B
+  ¥­§¡¨C¤ë²Ö¿n­°«B?
 
-###è¨­å®šæª”æ¡ˆä½ç½®
+­pºâ³Ì·x¤ëªº¨C¤é³Ì°ª·Å¥­§¡
+
+­pºâ³Ì§N¤ëªº¨C¤é³Ì§C·Å¥­§¡
+
+##¸ü¤J¸ê®Æ
+
+###³]©wÀÉ®×¦ì¸m
 ```{r}
-setwd('c:\\Users/U250/Desktop/ç”Ÿæ…‹è³‡è¨Š/ch_2.1/data/raw/')
+  setwd('c:\\Users/U250/Desktop/¥ÍºA¸ê°T/ch_2.1/data/raw/')
 ```
 
-###è¼‰å…¥æ‰€æœ‰è³‡æ–™
+###¸ü¤J©Ò¦³¸ê®Æ
 ```{r}
 library(data.table)
-
-#è¼‰å…¥æ‰€æœ‰æª”æ¡ˆ
-#pattern = 'auto'  è¨­å®šè¼‰å…¥æª”æ¡ˆåç¨±ä¸­æœ‰autoçš„æª”æ¡ˆ
+#¸ü¤J©Ò¦³ÀÉ®×
+#pattern = 'auto'  ³]©w¸ü¤JÀÉ®×¦WºÙ¤¤¦³autoªºÀÉ®×
 files <- list.files('.' , pattern = 'auto')
 
-#ä½¿ç”¨list()å»ºç«‹ä¸‰ç¶­ç©ºè³‡æ–™é›†åˆ
 cwd <- list()
 
-#length(files)è³‡æ–™é•·åº¦
-#åˆ©ç”¨foråšè¿´åœˆå°‡è³‡æ–™è¼‰å…¥
-
 for( i in 1:length(files)){
-  cwd[[i]] <- fread( files[i], skip = 74)
+  cwd[[i]] <- fread(files[i], skip = 74)
 }
 
-#æª¢æŸ¥è³‡æ–™
-head(cwd[[3]])
-head(cwd[[2]])
+head(cwd[[1]])
 
-#åˆä½µè³‡æ–™rbind
+```
 
-allinone_cwd <- for(i in 2:5){
-  rbind(cwd[[1]], cwd[[i]], fill = TRUE)
+###¦X¨Ö¸ê®Æ
+```{r}
+
+for(i in 2:length(cwd)){
+  cwd[[1]] <- rbind(cwd[[1]], cwd[[i]])
 }
 
-help("rbind")
+allinone_cwd <- cwd[[1]]
+
+rm(cwd)
+```
+
+###§ó§ï¼ĞÃD
+```{r}
+setnames(allinone_cwd, c('stno', 'yyyymmdd', 'PS01',
+                   'TX01', 'RH01', 'WD01', 'WD02',
+                   'PP01', 'SS01'))
+
+head(allinone_cwd)
+```
+
+###²M²z¸ê®Æ
+```{r}
+#§Q¥Îfor§å¦¸±N¸ê®Æ¾ã²z¡A¥Ø«e¥u°µ¨ì³æ¤@ÅÜ¼Æªº­«½Æ¡A¥Ø¼Ğ±N¥H¤Uµ{¦¡¦X¨Ö¦¨ÂùÅÜ¼Æ­«½Æ
+#§Q¥Îifelse(§PÂ_±ø¥ó, ²Å¦X§PÂ_±ø¥óªº¤º®e§ó§ï¤º®e, ¤£²Å¦X§PÂ_±ø¥óªº¤º®e§ó§ï¤º®e)
+c <- c(-9997, -9999, -9996, -9991, -9998, -9995)
+for (i in c) {
+  allinone_cwd$PS01 <- ifelse(
+  allinone_cwd$PS01 == i, NA, allinone_cwd$PS01)
+}
+#±NÅÜ¼ÆiÂk¹s
+rm(i)
+
+for (i in c) {
+  allinone_cwd$TX01  <- ifelse(
+  allinone_cwd$TX01 == i, NA, allinone_cwd$TX01)
+}
+
+rm(i)
+
+for (i in c) {
+   allinone_cwd$RH01 <- ifelse(
+     allinone_cwd$RH01 == i, NA, allinone_cwd$RH01)
+ }
+
+rm(i)
+
+for (i in c) {
+   allinone_cwd$WD01 <- ifelse(
+     allinone_cwd$WD01 == i, NA, allinone_cwd$WD01)
+ }
+
+rm(i)
+
+for (i in c) {
+   allinone_cwd$WD02 <- ifelse(
+     allinone_cwd$WD02 == i, NA, allinone_cwd$WD02)
+}
+
+rm(i)
+
+for (i in c) {
+   allinone_cwd$PP01 <- ifelse(
+     allinone_cwd$PP01 == i, NA, allinone_cwd$PP01)
+ }
+
+rm(i)
+
+for (i in c) {
+   allinone_cwd$SS01 <- ifelse(
+     allinone_cwd$SS01 == i, NA, allinone_cwd$SS01)
+ }
+
+rm(i)
+
+head(allinone_cwd)
+
+```
+
+###¬D¥X¸ê®Æ
+```{r}
+#¨Ï¥Îdplyr
+install.packages("dplyr")
+library(dplyr)
+#¿ï¨ústno¶µ¤¤¦W¦r¬°C0M530ªº
+wentdata_cwd <- filter(allinone_cwd, stno %in% c("C0M530") )
+
+head(wentdata_cwd)
+#¥i¥H±N¨äÂà¬°¨ç¼Æ
+
+```
+
+°Ñ¦Ò¡G
+http://genomicsclass.github.io/book/pages/dplyr_tutorial.html
+
+###®É¶¡¼Ğ°O
+```{r}
+#«Ø¥ß·sÄæ¦ìwentdata_cwd[,¤º®e]
+#®É¶¡®æ¦¡¤Æ(strptime(¥Ø¼Ğ,'®æ¦¡'))
+
+as.double(wentdata_cwd$yyyymmdd)
+strptime(wentdata_cwd$yyyymmdd,'%Y%m%d%H')
+
+wentdata_cwb.dt <- data.table(wentdata_cwd)
+
+wentdata_cwb.dt[, timestamp:=as.POSIXct(strptime(wentdata_cwb.dt$yyyymmdd-1,'%Y%m%d%H'))]
+
+```
+
+###­pºâ
+­pºâ´ú¯¸ C0M530 (¾Ä°_´ò¯¸) ±q2006¨ì2015¦~¦~ªº
+1. ¨C¤é¥­§¡®ğ·Å
+2. ¨C¤é³Ì§C·Åªº¥­§¡
+3. ¨C¤é³Ì°ª·Åªº¥­§¡
+
+```{R}
+#TEXT 1
+#§Q¥Îaggregate(»E¦X¥Ø¼Ğ, by = list()»E¦X±ø¥ó, FUN = ¨Ï¥Î¨ç¼Æ)
+
+me_ma_mi <- function(x){
+  a <- c()
+  a[1] <- mean(as.double(x), na.rm = TRUE )
+  a[2] <- max(x, na.rm = TRUE)
+  a[3] <- min(x, na.rm = TRUE)
+  return(a)
+  }
+
+day_temper_info <- aggregate(as.numeric(wentdata_cwb.dt$TX01), 
+                     by = list(
+                       format.Date(wentdata_cwb.dt$timestamp, '%Y-%m-%d')
+                       ),  FUN = me_ma_mi
+                     )
+#¥Ñ©óª½¦æ¨ì²{¦bday_temper_info¦¨¬°¤Tºû®æ¦¡¡A¦]¦¹ªí®æ§ì¤£¥X¨Ó(¥u·|§e²{¨C¤@ºû²Ä¤@¦C)
+#±N¨äÂà´«¦¨¯x°}¡A¦AÂà¦¨table
+day_temper_info <- as.data.frame(as.matrix(day_temper_info))
 
 
+head(day_temper_info)
+setnames(day_temper_info, c('day', 'DTM', 'DMax','Dmin'))
+head(day_temper_info)
+
+#
+
+rm(day_temper_info.df)
+rm(a)
+
+```
+
+4. ¨C¤ë¥­§¡®ğ·Å
+
+```{r}
+m_mean <- function(x){
+  a <- c()
+  a[1] <- mean(as.double(x), na.rm = TRUE )
+  return(a)
+}
+
+m_temper_info <- aggregate(as.numeric(wentdata_cwb.dt$TX01), 
+                     by = list(
+                       format.Date(wentdata_cwb.dt$timestamp, '%Y-%m')
+                       ),  FUN = m_mean
+                     )
+
+m_temper_info <- as.data.frame(as.matrix(m_temper_info))
+
+head(m_temper_info)
+setnames(m_temper_info, c('Month', 'MTM'))
+head(m_temper_info)
+
+```
+
+5. ¥­§¡¨C¤ë²Ö¿n­°«B
+```{R}
+
+m_sum <- function(x){
+  a <- c()
+  a[1] <- sum(as.double(x), na.rm = TRUE )
+  return(a)
+}
+
+m_rain_info <- aggregate(as.numeric(wentdata_cwb.dt$PP01), 
+                     by = list(
+                       format.Date(wentdata_cwb.dt$timestamp, '%Y-%m')
+                       ),  FUN = m_sum
+                     )
+
+m_rain_info <- as.data.frame(as.matrix(m_rain_info))
+
+head(m_rain_info)
+setnames(m_rain_info, c('Month', 'MPS'))
+head(m_rain_info)
+
+```
+as.double(wentdata_cwd$yyyymmdd)
+strptime(wentdata_cwd$yyyymmdd,'%Y%m%d%H')
+­pºâ³Ì·x¤ëªº¨C¤é³Ì°ª·Å¥­§¡
+```{r}
+#±N¸ê®Æ±Æ§Ç
+TEXT <- day_temper_info %>% arrange(DTM) 
+#¨ú¥X¤ë¥÷
+went_hot_mouth <- TEXT[length(TEXT$day),'day']
+#
+went_hot_mouth_ch <- strptime(went_hot_mouth[1], '%Y-%m')')
+
+medmt_data <- wentdata_cwb.dt %>% 
+                filter(timestamp %in%    
+                starts_with('strptime(went_hot_mouth_ch), '%Y-%m')'))
 
 
+                order(timestamp, desc(wentdata_cwb.dt$TX01))
 
-#append()
+list(went_hot_mouth_ch)
+list(medmt_data)
+list(TEXT)
+list(day_temper_info)
+list(went_hot_mouth)
+rm(TEXT)
 
-list(cwd[[1]])
+```
 
+­pºâ³Ì§N¤ëªº¨C¤é³Ì§C·Å¥­§¡
+```{r}
 
-
-#æ›´æ›æ¬„ä½åç¨±
-#setname(æª”æ¡ˆå, 1:9, æ¬„ä½å)
-
-#as.POSIXct()
-#strptime(æª”æ¡ˆ, '%Y%m%d%H)
-
-changetime_np_raw <- as.POSIXct( strptime(
-  [np_raw$yyyymmddhh]   '%Y%m%d%H'))                              '%Y%m%d%H'))
-
-np_raw$yyyymmddhh <- np_raw$yyyymmddhh-1
-
-np_raw[, timestamp:=as.POSIXct(strptime(yyyymmddhh, '%Y%m%d%H'))]
-
-
-#aggregate
-
-aggregate(. ~ stno, data = np_raw, FUN = mean)
-
-list(np_raw)
-
-
-sk_er(name)
-<- function(
-  c1 <- c (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  c1 <- c ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j')
-  c2 <- c ('stno', 'yyyymmddhh', 'PS01', 'TX01', 'RH01',
-           'WD01', 'WD02', 'PP01', 'SS01', 'timestamp')
-  setnames(np_raw, 1:10, c1)
-  for(np_raw$a in a:j){np_raw$a <= -9999 <-na}
-    
-    
-    
-)
+```
