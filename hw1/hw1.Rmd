@@ -27,18 +27,18 @@ files <- list.files('.' , pattern = 'auto')
 
 cwd <- list()
 
-for( i in 1:length(files)){
-  cwd[[i]] <- fread(files[i], skip = 74)
+for( i in 1:10){
+  cwd[[i]] <- fread(files[i], skip = 75)
 }
 
 head(cwd[[1]])
-
+rm(cwd)
 ```
 
 ###合併資料
 ```{r}
 
-for(i in 2:length(cwd)){
+for(i in 2:10){
   cwd[[1]] <- rbind(cwd[[1]], cwd[[i]])
 }
 
@@ -233,29 +233,54 @@ strptime(wentdata_cwd$yyyymmdd,'%Y%m%d%H')
 計算最暖月的每日最高溫平均
 ```{r}
 #將資料排序
-TEXT <- day_temper_info %>% arrange(DTM) 
+TEXT <- m_temper_info %>% arrange(MTM) 
 #取出月份
-went_hot_mouth <- TEXT[length(TEXT$day),'day']
-#
-went_hot_mouth_ch <- strptime(went_hot_mouth[1], '%Y-%m')')
+went_hot_mouth <- TEXT[length(TEXT$Month),'Month']
+#轉換文字
+went_hot_mouth_ch <- 
+  substr(as.matrix(TEXT[length(TEXT$Month),'Month'])[1, 1], 1, 7)
+#轉換時間(失敗)
+as.matrix(went_hot_mouth_ch)
+as.Date(as.matrix(went_hot_mouth_ch) , format = "%Y-%m")
+as.POSIXct(strptime(as.matrix(went_hot_mouth_ch), '%Y-%m'))
+strptime(went_hot_mouth_ch, '%Y-%m')
 
-medmt_data <- wentdata_cwb.dt %>% 
-                filter(timestamp %in%    
-                starts_with('strptime(went_hot_mouth_ch), '%Y-%m')'))
+#換方法
+##轉格式
+day_temper_info_ch <- as.data.table(day_temper_info)
+##增加欄位
+day_temper_info_ch[, Mouth:=substr(day_temper_info_ch$day, 1, 7)]
+##篩選
+medmt_data <- day_temper_info_ch[day_temper_info_ch$Mouth == went_hot_mouth_ch]
+##除錯-Inf
+medmt_data$DMax <- ifelse(
+  c(as.character(medmt_data$DMax)) == '     -Inf',
+  NA, c(as.character(medmt_data$DMax)))
+#解
+most_hot_mouth_mean <- m_mean(as.numeric(c(medmt_data$DMax)))
 
-
-                order(timestamp, desc(wentdata_cwb.dt$TX01))
-
-list(went_hot_mouth_ch)
-list(medmt_data)
-list(TEXT)
-list(day_temper_info)
-list(went_hot_mouth)
-rm(TEXT)
 
 ```
 
 計算最冷月的每日最低溫平均
 ```{r}
+#將資料排序
+TEXT2 <- m_temper_info %>% arrange(MTM) 
+#取出月份
+went_hot_mouth <- TEXT[1,'Month']
+#轉換文字
+went_cold_mouth_ch <- 
+  substr(as.matrix(TEXT[length(TEXT$Month),'Month'])[1, 1], 1, 7)
+
+##轉格式,增加欄位做過了
+
+##篩選
+medmt_data <- day_temper_info_ch[day_temper_info_ch$Mouth == went_cold_mouth_ch]
+##除錯Inf
+medmt_data$Dmin <- ifelse(
+  c(as.character(medmt_data$Dmin)) == '      Inf',
+  NA, c(as.character(medmt_data$Dmin)))
+#解
+most_cold_mouth_mean <- m_mean(as.numeric(c(medmt_data$Dmin)))
 
 ```
